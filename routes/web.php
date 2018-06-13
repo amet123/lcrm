@@ -12,6 +12,8 @@ Route::pattern('id', '[0-9]+');
 /******************   APP routes  ********************************/
 
 Route::get('/', 'Users\DashboardController@index');
+Route::get('/client/create', 'Users\ClientsController@create');
+Route::post('/client/store', 'Users\ClientsController@store');
 Route::get('home', 'Users\DashboardController@index');
 Route::get('invite/{slug3}', 'AuthController@getSignup');
 Route::post('invite/{slug3}', 'AuthController@postSignup');

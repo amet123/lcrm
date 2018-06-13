@@ -219,6 +219,14 @@
             <span class="nav-text"> {{trans('left_menu.tasks')}}</span>
         </a>
     </li>
+    <li {!! (Request::is( '/client/*') || Request::is( 'client/create') ? 'class="active"' : '') !!}>
+        <a href="{{url('/client/create')}}">
+            <span class="nav-icon">
+         <i class="material-icons">client</i>
+        </span>
+            <span class="nav-text"> {{trans('left_menu.client')}}</span>
+        </a>
+    </li>
     @if(isset($user_data) && $user_data->hasAccess(['staff.read']) || $user_data->inRole('admin'))
         <h4 class="mar-5 border-b">Configuration</h4>
     <li {!! (Request::is( 'staff/*') || Request::is( 'staff') ? 'class="active"' : '') !!}>
