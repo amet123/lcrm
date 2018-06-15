@@ -25,6 +25,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Yajra\Datatables\Datatables;
 
+use App\Models\Client;
+
 class InvoiceController extends UserController
 {
 	/**
@@ -140,7 +142,9 @@ class InvoiceController extends UserController
 
 		$this->generateParams();
 
-		return view('user.invoice.create', compact('title'));
+		$clients = Client::pluck('first_name', 'id')->toArray();
+
+		return view('user.invoice.create', compact('title', 'clients'));
 	}
 
 	/**

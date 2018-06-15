@@ -11,39 +11,10 @@
                 <div class="form-group required {{ $errors->has('customer_id') ? 'has-error' : '' }}">
                     {!! Form::label('customer_id', trans('invoice.agent_name'), ['class' => 'control-label required']) !!}
                     <div class="controls">
-                        {!! Form::select('customer_id', $customers, (isset($invoice->customer_id)?$invoice->customer_id:null), ['id'=>'customer_id','class' => 'form-control']) !!}
+                        {!! Form::select('customer_id', [''=>'--Select--']+$clients, (isset($invoice->customer_id)?$invoice->customer_id:null), ['id'=>'customer_id','class' => 'form-control']) !!}
                         <span class="help-block">{{ $errors->first('customer_id', ':message') }}</span>
                     </div>
                 </div>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-                <div class="form-group required {{ $errors->has('sales_team_id') ? 'has-error' : '' }}">
-                    {!! Form::label('sales_team_id', trans('invoice.sales_team_id'), ['class' => 'control-label required']) !!}
-                    <div class="controls">
-                        {!! Form::select('sales_team_id', $salesteams, (isset($invoice)?$invoice->sales_team_id:null), ['id'=>'sales_team_id','class' => 'form-control']) !!}
-                        <span class="help-block">{{ $errors->first('sales_team_id', ':message') }}</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-xs-12 col-sm-6">
-                <div class="form-group required {{ $errors->has('sales_person_id') ? 'has-error' : '' }}">
-                    {!! Form::label('sales_person_id', trans('salesteam.main_staff'), ['class' => 'control-label required']) !!}
-                    <div class="controls">
-                        {!! Form::select('sales_person_id', $staffs, null, ['id'=>'sales_person_id','class' => 'form-control']) !!}
-                        <span class="help-block">{{ $errors->first('sales_person_id', ':message') }}</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                    <div class="form-group required {{ $errors->has('qtemplate_id') ? 'has-error' : '' }}">
-                        {!! Form::label('qtemplate_id', trans('invoice.quotation_template'), ['class' => 'control-label']) !!}
-                        <div class="controls">
-                            {!! Form::select('qtemplate_id', $qtemplates, null, ['class' => 'form-control']) !!}
-                            <span class="help-block">{{ $errors->first('qtemplate_id', ':message') }}</span>
-                        </div>
-                    </div>
             </div>
         </div>
             <div class="row">
@@ -65,62 +36,110 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-12 col-sm-6">
-                    <div class="form-group required {{ $errors->has('payment_term') ? 'has-error' : '' }}">
-                        {!! Form::label('payment_term', trans('invoice.payment_term'), ['class' => 'control-label required']) !!}
-                        <div class="controls">
+            </div>
 
-                            <select name="payment_term" id="payment_term" class="form-control">
-                                <option value=""></option>
-                                @if(Settings::get('payment_term1')!='0')
-                                    <option value="{{Settings::get('payment_term1')}} {{trans('invoice.days')}}"
-                                            @if(isset($invoice) && Settings::get('payment_term1') ." Days" == $invoice->payment_term) selected @endif>{{Settings::get('payment_term1')}} {{trans('invoice.days')}}</option>
-                                @endif
-                                @if(Settings::get('payment_term2')!='0')
-                                    <option value="{{Settings::get('payment_term2')}} {{trans('invoice.days')}}"
-                                            @if(isset($invoice) && Settings::get('payment_term2') ." Days" == $invoice->payment_term) selected @endif>{{Settings::get('payment_term2')}} {{trans('invoice.days')}}</option>
-                                @endif
-                                @if(Settings::get('payment_term3')!='0')
-                                    <option value="{{Settings::get('payment_term3')}} {{trans('invoice.days')}}"
-                                            @if(isset($invoice) && Settings::get('payment_term3') ." Days" == $invoice->payment_term) selected @endif>{{Settings::get('payment_term3')}} {{trans('invoice.days')}}</option>
-                                @endif
-                                <option value="0 {{trans('quotation.days')}}"
-                                        @if(isset($invoice) && $invoice->payment_term==0) selected @endif>{{trans('invoice.immediate_payment')}}</option>
-                            </select>
-                            <span class="help-block">{{ $errors->first('payment_term', ':message') }}</span>
+            <h3>Billing Details</h3>
+            <hr>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('customer_name') ? 'has-error' : '' }}">
+                        {!! Form::label('customer_name', 'Customer Name', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::text('customer_name', null, ['class' => 'form-control ']) !!}
+                            <span class="help-block">{{ $errors->first('customer_name', ':message') }}</span>
                         </div>
                     </div>
                 </div>
                 <div class="col-xs-12 col-sm-6">
-                    <div class="form-group required {{ $errors->has('status') ? 'has-error' : '' }}">
-                        {!! Form::label('status', trans('invoice.status'), ['class' => 'control-label required']) !!}
+                    <div class="form-group required {{ $errors->has('address_line_2') ? 'has-error' : '' }}">
+                        {!! Form::label('address_line_2', 'Address Line 2', ['class' => 'control-label required']) !!}
                         <div class="controls">
-                            <div class="input-group">
-                                <label>
-                                    <input type="radio" name="status" value="{{trans('invoice.open_invoice')}}"
-                                           class='icheckblue'
-                                           @if(isset($invoice) && $invoice->status == 'Open Invoice') checked @endif>
-                                    {{trans('invoice.open_invoice')}}
-                                </label>
-                                <label>
-                                    <input type="radio" name="status" value="{{trans('invoice.overdue_invoice')}}"
-                                           class='icheckblue'
-                                           @if(isset($invoice) && $invoice->status == 'Overdue Invoice') checked @endif>
-                                    {{trans('invoice.overdue_invoice')}}
-                                </label>
-                                <label>
-                                    <input type="radio" name="status" value="{{trans('invoice.paid_invoice')}}"
-                                           class='icheckblue'
-                                           @if(isset($invoice) && $invoice->status == 'Paid Invoice') checked @endif>
-                                    {{trans('invoice.paid_invoice')}}
-                                </label>
-                            </div>
-
-                            <span class="help-block">{{ $errors->first('status', ':message') }}</span>
+                            {!! Form::text('address_line_2', null, ['class' => 'form-control']) !!}
+                            <span class="help-block">{{ $errors->first('address_line_2', ':message') }}</span>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('address_line_1') ? 'has-error' : '' }}">
+                        {!! Form::label('address_line_1', 'Address Line 1', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::text('address_line_1', null, ['class' => 'form-control ']) !!}
+                            <span class="help-block">{{ $errors->first('address_line_1', ':message') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('address_line_2') ? 'has-error' : '' }}">
+                        {!! Form::label('address_line_2', 'Address Line 2', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::text('address_line_2', null, ['class' => 'form-control']) !!}
+                            <span class="help-block">{{ $errors->first('address_line_2', ':message') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('office_contact_no') ? 'has-error' : '' }}">
+                        {!! Form::label('office_contact_no', 'Contact No', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::text('office_contact_no', null, ['class' => 'form-control ']) !!}
+                            <span class="help-block">{{ $errors->first('office_contact_no', ':message') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('mobile_no') ? 'has-error' : '' }}">
+                        {!! Form::label('mobile_no', 'Mobile No', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::text('mobile_no', null, ['class' => 'form-control']) !!}
+                            <span class="help-block">{{ $errors->first('mobile_no', ':message') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('office_contact_no') ? 'has-error' : '' }}">
+                        {!! Form::label('email', 'Email', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::email('email', null, ['class' => 'form-control ']) !!}
+                            <span class="help-block">{{ $errors->first('email', ':message') }}</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('website') ? 'has-error' : '' }}">
+                        {!! Form::label('website', 'Website', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::text('website', null, ['class' => 'form-control']) !!}
+                            <span class="help-block">{{ $errors->first('website', ':message') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-12 col-sm-6">
+                    <div class="form-group required {{ $errors->has('facebook_address') ? 'has-error' : '' }}">
+                        {!! Form::label('facebook_address', 'Facebook Address', ['class' => 'control-label required']) !!}
+                        <div class="controls">
+                            {!! Form::text('facebook_address', null, ['class' => 'form-control ']) !!}
+                            <span class="help-block">{{ $errors->first('facebook_address', ':message') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         <div class="row">
             <div class="col-md-12">
                 <label class="control-label required">{{trans('quotation.products')}}
